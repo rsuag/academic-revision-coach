@@ -1,7 +1,7 @@
 {
-  "name": "personal",
+  "name": "academic-revision-coach",
   "interface": {
-    "displayName": "Personal"
+    "displayName": "Academic Revision Coach"
   },
   "plugins": [
     {

@@ -27,7 +27,7 @@ The design is informed by public discussions and tools that emphasize human over
 
 ## Quick Start
 
-Install the local marketplace during development, then start a new Codex task and say one of:
+Install the `submission-package-coach` plugin from this repository's marketplace, then start a new Codex task and say one of:
 
 ```text
 Audit my submission package; print findings only.

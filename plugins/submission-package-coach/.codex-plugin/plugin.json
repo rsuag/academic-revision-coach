@@ -1,6 +1,6 @@
 {
   "name": "submission-package-coach",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Token-efficient, human-controlled academic revision prompts for submission packages.",
   "author": {
     "name": "Ruilin Su"
