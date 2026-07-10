@@ -36,19 +36,77 @@ The design is informed by public discussions and tools that emphasize human over
 - Learns only through explicit user-approved profile updates.
 - Escalates to installed specialist skills instead of reproducing their large workflows.
 
-## Quick Start
+## How to Use
 
-Install the `submission-package-coach` plugin from this repository's marketplace, then start a new Codex task and say one of:
+### 1. Install Once
+
+Clone the repository, register its marketplace, and install the plugin:
+
+```bash
+git clone https://github.com/rsuag/academic-revision-coach.git
+cd academic-revision-coach
+codex plugin marketplace add .
+codex plugin add submission-package-coach@academic-revision-coach
+```
+
+Start a new Codex task after installation so the skill is loaded.
+
+### 2. Choose One Output
+
+Say what you want to receive, not only what file you are supplying. The default is an audit report.
 
 ```text
 Audit my submission package; print findings only.
-Create a mentor-style profile from these tracked edits.
-Give me a minimal prompt for this reviewer response.
+Give me a prompt card for this reviewer response.
+Turn these package findings into a collaborator comment table.
+Run the final release gate on the authoritative submission files.
 ```
 
-The skill asks only for missing information that affects the result. For an audit, identify which copies are authoritative before supplying multiple manuscript versions.
+Do not ask for `draft suggestions` unless you want candidate replacement text. This is the only output mode that may propose wording.
+
+### 3. Create a Brief for Any Repeated Project
+
+Copy `plugins/submission-package-coach/templates/project-brief.md` into the manuscript project. Record one authoritative version for each file, the facts that must remain consistent, and any open author decision. Then say:
+
+```text
+Use this project brief. Audit the response letter and manuscript; print findings only.
+```
+
+The plugin asks only for missing details that affect the output. If no brief exists, it asks one compact intake question; it does not assume which of several document versions is authoritative.
+
+### 4. Add Mentor Style Only When Useful
+
+Supply representative tracked edits or comments, then say:
+
+```text
+Create a mentor-style profile from these edits. Do not save it until I approve the rules.
+```
+
+Review the extracted evidence count, confidence, scope, exceptions, and counterexamples. One-off edits remain low-confidence candidates instead of becoming permanent rules.
 
 For work that will recur, first create a `project-brief.md` from `plugins/submission-package-coach/templates/project-brief.md`. This keeps version choices, package scope, and open author decisions visible without pasting the whole project into every task.
+
+## Decision Flow
+
+```mermaid
+flowchart TD
+    A[Start with files or a project brief] --> B{Repeated project?}
+    B -- Yes --> C[Confirm authoritative files in project brief]
+    B -- No --> D[Answer one compact intake question]
+    C --> E{Choose one output contract}
+    D --> E
+    E -- Audit report --> F[Evidence-bound findings and minimal manual actions]
+    E -- Prompt card --> G[One copyable scenario prompt]
+    E -- Comment table --> H[Collaborator-ready comments]
+    E -- Draft suggestions --> I[Explicit opt-in isolated edits]
+    E -- Release gate --> J[READY / READY AFTER FIXES / NOT READY]
+    F --> K{Need specialist review?}
+    J --> K
+    K -- General integrity / re-review --> L[Academic Research Suite]
+    K -- Microbial ecology methods --> M[Deep Paper Reviewer]
+    K -- Nature-family workflow --> N[Nature Skills]
+    K -- No --> O[Author manually accepts or rejects actions]
+```
 
 ## Output Contracts
 
@@ -71,13 +129,17 @@ The prompt cards and exact schemas live in `plugins/submission-package-coach/ref
 
 Do not commit confidential manuscripts, reviewer reports, or mentor annotations to this public repository.
 
-## Related Skills
+## Similar Skills and the Boundary
 
-This plugin is intentionally a thin orchestration layer.
+This plugin is intentionally a thin, cross-document orchestration layer. It is not objectively better than the related skills; it is better suited to a narrow final-submission problem.
 
-- `academic-research-suite`: integrity, citations, re-review, and full response traceability.
-- `deep-paper-reviewer`: domain-specific environmental microbiology, microbial ecology, and biogeochemistry review.
-- `nature-skills`: Nature-family workflow where journal-specific guidance matters.
+| Skill | Strongest use | What Academic Revision Coach adds | Choose the other skill when |
+| --- | --- | --- | --- |
+| `academic-research-suite` | Full research-to-paper workflow, integrity verification, citation checks, formal revision and re-review. | A compact project brief, one-output routing, manual-action-first package audit, and a lightweight final release decision. | You need full pipeline artifacts, citation verification, reviewer simulation, or formal traceability. |
+| `deep-paper-reviewer` | Environmental microbiology, microbial ecology, and biogeochemistry methods, statistics, mechanisms, figures, and SI. | Discipline-neutral submission-package consistency and mentor/author style profiles without duplicating domain logic. | The question depends on domain mechanisms, statistical interpretation, or source-data review. |
+| `nature-skills` | Nature-family writing, polishing, citation/data tasks, and reviewer-response workflows. | Cross-journal, audit-first coordination across all submitted files, with an explicit no-rewrite default. | The journal is Nature-family and you need its focused writing, data, citation, or response workflow. |
+
+The advantage is therefore operational rather than rhetorical: fewer repeated context uploads, a clear boundary between audit and drafting, and a final decision whose evidence is visible to the author.
 
 ## Development
 

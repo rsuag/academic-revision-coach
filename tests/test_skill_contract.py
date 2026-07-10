@@ -57,6 +57,22 @@ class SkillContractTests(unittest.TestCase):
                 self.assertTrue(finding["category"])
                 self.assertTrue(finding["evidence"])
 
+    def test_readme_explains_installation_and_routing(self):
+        readme = (Path(__file__).parents[1] / "README.md").read_text(encoding="utf-8")
+
+        required_phrases = [
+            "## How to Use",
+            "codex plugin marketplace add .",
+            "codex plugin add submission-package-coach@academic-revision-coach",
+            "## Decision Flow",
+            "```mermaid",
+            "## Similar Skills and the Boundary",
+            "What Academic Revision Coach adds",
+        ]
+
+        for phrase in required_phrases:
+            self.assertIn(phrase, readme)
+
 
 if __name__ == "__main__":
     unittest.main()
