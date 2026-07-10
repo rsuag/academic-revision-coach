@@ -9,18 +9,18 @@ Representative source confirmed by author: yes | no
 
 Add only repeated, transferable preferences. Keep project-specific scientific facts out of this file.
 
-| ID | Evidence count | Preference rule | Exception | Example transformation | Validation check |
-| --- | ---: | --- | --- | --- | --- |
-| M-01 |  |  |  |  |  |
+| ID | Source IDs | Evidence count | Confidence | Scope | Preference rule | Exception | Example transformation | Validation check |
+| --- | --- | ---: | --- | --- | --- | --- | --- | --- |
+| M-01 |  |  | low |  |  |  |  |  |
 
 ## Do Not Infer
 
-- Rules that appear only once.
+- Rules that appear only once, unless the author explicitly approves them as a preference.
 - A scientific claim, numerical value, or journal requirement from a prior manuscript.
 - A preference that conflicts with current reviewer, editor, or journal instructions.
 
 ## Learning Log
 
-| Date | User decision | Rule affected | Change made |
-| --- | --- | --- | --- |
-|  |  |  |  |
+| Date | User decision | Rule affected | Counterexample or change | Saved by author |
+| --- | --- | --- | --- | --- |
+|  |  |  |  | no |

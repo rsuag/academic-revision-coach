@@ -1,18 +1,21 @@
 {
   "name": "submission-package-coach",
-  "version": "0.1.1",
-  "description": "Token-efficient, human-controlled academic revision prompts for submission packages.",
+  "version": "0.2.0+codex.20260710013545",
+  "description": "Human-controlled academic revision prompts with project briefs, release gates, and regression cases.",
   "author": {
     "name": "Ruilin Su"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Submission Package Coach",
-    "shortDescription": "Audit papers and submission packages without losing your voice.",
-    "longDescription": "Routes academic revision tasks to compact, evidence-bound prompts. It starts with author-controlled audit reports, supports optional mentor-style rules, and escalates to installed specialist skills only when needed.",
+    "shortDescription": "Audit academic submissions with reusable context and release gates.",
+    "longDescription": "Routes academic revision tasks to compact, evidence-bound prompts. Reuse a project brief, apply evidence-backed author or mentor rules, choose a precise output contract, and run an auditable release gate before submission.",
     "developerName": "Ruilin Su",
     "category": "Productivity",
-    "capabilities": ["Interactive", "Write"],
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
     "defaultPrompt": [
       "Audit my submission package; print findings only.",
       "Create a mentor-style profile from these tracked edits.",

@@ -9,6 +9,8 @@ description: Route academic manuscript, response-letter, cover-letter, and suppo
 
 Help authors revise academic submission materials without wasting tokens, inventing facts, flattening author voice, or silently rewriting files. This is a prompt router and audit coach, not a replacement for specialist scientific review.
 
+Load only the reference named by the active route. Do not load every template or prompt card for a narrow task.
+
 ## Default Contract
 
 Unless the user explicitly requests drafting or direct file edits:
@@ -22,7 +24,9 @@ Unless the user explicitly requests drafting or direct file edits:
 
 ## Intake: Ask Only What Changes The Output
 
-First inspect the supplied files and conversation. If the answer is not already available, ask a single compact intake question covering only the missing high-impact fields:
+First inspect the supplied files and conversation. If a `project-brief.md` exists, treat its declared authoritative files and decisions as the starting context. If it does not exist and the task will recur, offer to create one from `templates/project-brief.md`.
+
+If the answer is not already available, ask a single compact intake question covering only the missing high-impact fields:
 
 - Task: `package audit`, `reviewer response`, `cover letter`, `supporting information`, `manuscript section`, or `mentor profile`.
 - Output mode: `audit only` (default), `prompt only`, or `draft suggestions`.
@@ -30,12 +34,24 @@ First inspect the supplied files and conversation. If the answer is not already 
 - Authoritative versions of the manuscript, response letter, cover letter, SI, figures/tables, and reviewer/editor comments.
 - Whether a mentor/advisor style profile should apply, and its path if already available.
 
-Never ask for details already provided. Do not request the whole package for a narrow task.
+Never ask for details already provided. Do not request the whole package for a narrow task. Do not persist a brief or profile unless the user explicitly asks to save it.
+
+## Output Router
+
+Choose one output contract before reviewing. Read `references/output-contracts.md` only when a task needs an output other than the default.
+
+- `audit report` (default): findings and minimal manual actions; no rewrite.
+- `prompt card`: a compact, copyable prompt for an external model.
+- `comment table`: findings formatted for Word, Overleaf, or a collaborator.
+- `draft suggestions`: isolated replacement candidates, only after explicit opt-in.
+- `release gate`: final submission decision; read `references/release-gate.md`.
+
+Do not combine contracts unless the user asks. A package audit normally uses `audit report`; a final pre-submission check uses `release gate`.
 
 ## Token Budget Rules
 
 1. For a narrow task, load only the target document plus directly linked evidence.
-2. For package audit, first create a one-line fact ledger for title, authorship, version/date, key claims, numbers, named figures/tables, and requested changes; then compare documents against that ledger.
+2. For package audit, first use the project brief if present; otherwise create a one-line fact ledger for title, authorship, version/date, key claims, numbers, named figures/tables, and requested changes. Then compare documents against that ledger.
 3. Quote only the minimum text needed to locate a finding. Do not reproduce full documents.
 4. Merge duplicate findings. A cross-document contradiction is one finding with all affected locations.
 5. Start with `P0`/`P1` issues. Stop after the requested depth instead of padding a report with style preferences.
@@ -46,7 +62,7 @@ Never ask for details already provided. Do not request the whole package for a n
 
 Use when more than one of manuscript, response letter, cover letter, SI, figures/tables, or journal instructions is supplied.
 
-Output exactly these sections:
+For a reusable external prompt, read `references/prompt-cards.md` and print only the `package audit` card. For an audit report, output exactly these sections:
 
 1. `Release decision`: `READY`, `READY AFTER FIXES`, or `NOT READY` with one-sentence reason.
 2. `P0/P1 findings`: only submission-blocking or credibility-risk issues.
@@ -55,7 +71,7 @@ Output exactly these sections:
 5. `Author decisions needed`: choices that cannot be inferred safely.
 6. `Minimal action checklist`: ordered, deduplicated, and manually actionable.
 
-For every finding, use: `severity | location | evidence | risk | minimal manual action`.
+For every finding, use: `severity | category | location | evidence | risk | minimal manual action`. Category is one of `factual consistency`, `scientific risk`, `journal compliance`, or `style preference`.
 
 ### B. Reviewer Response / Response Letter
 
@@ -85,7 +101,7 @@ For prose-only work, check claim-evidence alignment, scope, hedging, terminology
 
 Use only with user-supplied tracked edits, comments, or before/after examples. Extract repeated and transferable preferences, not manuscript facts. Ask the user whether the source is representative before saving a profile.
 
-Create or update a profile using `templates/mentor-style-profile.md`. Each rule needs: evidence count, rule, allowed exception, example transformation, and validation check. Never promote a one-off edit to a universal rule without user confirmation.
+Read `references/profile-rules.md` before extracting a profile. Create or update a profile using `templates/mentor-style-profile.md`. Each rule needs source identifiers, evidence count, confidence, scope, rule, allowed exception, example transformation, and validation check. Never promote a one-off edit to a universal rule without user confirmation.
 
 ## Applying Profiles
 
@@ -94,7 +110,7 @@ If an author or mentor profile is supplied:
 1. Apply it after factual correctness and journal instructions.
 2. Treat conflicting profile rules as `author decision needed`.
 3. Distinguish style preference from scientific correction.
-4. At the end, ask one low-friction learning question: `Which suggested changes did you accept, reject, or revise differently?` Update the profile only when the user explicitly asks to save the learning.
+4. At the end, ask one low-friction learning question: `Which suggested changes did you accept, reject, or revise differently?` Update the profile only when the user explicitly asks to save the learning. Record a rejected rule as a counterexample rather than deleting its evidence.
 
 ## Specialist-Skill Escalation
 
@@ -115,3 +131,5 @@ Before responding, verify:
 - The report separates factual inconsistency, scientific risk, journal compliance, and style preference.
 - No generic praise, repeated politeness, or AI-detection claims appear.
 - The output is shorter than the materials reviewed unless a full traceability table is requested.
+- The selected output contract is satisfied and no unrequested contract is appended.
+- Any `READY` release decision has no unresolved P0/P1 finding or missing authoritative file named in the project brief.

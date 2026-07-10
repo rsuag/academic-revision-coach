@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "package-number-drift",
+      "route": "package audit",
+      "input": "Manuscript: 42 samples were analyzed. Response letter: We clarified that 48 samples were analyzed.",
+      "expected_findings": [
+        {"severity": "P1", "category": "factual consistency", "evidence": "42 samples versus 48 samples"}
+      ]
+    },
+    {
+      "id": "response-claim-without-edit",
+      "route": "reviewer response",
+      "input": "Response: We revised the Methods to state the FDR threshold. Supplied Methods: no FDR threshold is present.",
+      "expected_findings": [
+        {"severity": "P1", "category": "factual consistency", "evidence": "claimed revision is absent from supplied Methods"}
+      ]
+    },
+    {
+      "id": "si-label-drift",
+      "route": "supporting information",
+      "input": "Manuscript cites Table S4 for primers. SI labels the primer list as Table S5.",
+      "expected_findings": [
+        {"severity": "P1", "category": "factual consistency", "evidence": "Table S4 versus Table S5"}
+      ]
+    },
+    {
+      "id": "mentor-one-off-rule",
+      "route": "mentor profile",
+      "input": "One tracked edit replaces one sentence with a shorter sentence; no repeated edits are supplied.",
+      "expected_findings": [
+        {"severity": "P2", "category": "style preference", "evidence": "one occurrence requires low-confidence candidate status"}
+      ]
+    }
+  ]
+}

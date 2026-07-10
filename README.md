@@ -4,6 +4,17 @@ An installable Codex plugin for the final, high-stakes stage of academic submiss
 
 The default is deliberately conservative: it prints a prioritized audit report and minimal manual actions. It does not silently rewrite your files, invent missing evidence, or turn every concern into generic prose.
 
+## Version 0.2
+
+`v0.2.0` adds the pieces that make a prompt workflow dependable across revision rounds:
+
+- `project-brief.md` records the authoritative files, facts, constraints, and open decisions once.
+- One output contract per task prevents a request for a prompt from becoming an unsolicited rewrite.
+- Prompt cards give copyable, scenario-specific instructions without loading unrelated rules.
+- A release gate returns an auditable `READY`, `READY AFTER FIXES`, or `NOT READY` decision.
+- Mentor rules have evidence counts, confidence, scope, exceptions, and counterexamples.
+- Four anonymized regression cases keep future changes tied to real failure modes.
+
 ## Why It Exists
 
 The first release targets recurring problems in AI-assisted academic revision:
@@ -20,7 +31,7 @@ The design is informed by public discussions and tools that emphasize human over
 
 - Routes six scenarios: package audit, reviewer response, cover letter, supporting information, manuscript section, and mentor-style profiling.
 - Defaults to `audit only`; drafting and direct editing require explicit user choice.
-- Uses a minimal cross-document fact ledger before a package audit, then deduplicates findings by risk.
+- Uses a reusable project brief and a minimal cross-document fact ledger before a package audit, then deduplicates findings by risk.
 - Lets users supply an author voice profile and a mentor/advisor profile.
 - Learns only through explicit user-approved profile updates.
 - Escalates to installed specialist skills instead of reproducing their large workflows.
@@ -36,6 +47,20 @@ Give me a minimal prompt for this reviewer response.
 ```
 
 The skill asks only for missing information that affects the result. For an audit, identify which copies are authoritative before supplying multiple manuscript versions.
+
+For work that will recur, first create a `project-brief.md` from `plugins/submission-package-coach/templates/project-brief.md`. This keeps version choices, package scope, and open author decisions visible without pasting the whole project into every task.
+
+## Output Contracts
+
+Choose one output type per request:
+
+- `audit report`: evidence-bound findings and minimal manual actions.
+- `prompt card`: one concise prompt to run elsewhere.
+- `comment table`: collaborator-ready review comments.
+- `draft suggestions`: isolated edits, only after explicit opt-in.
+- `release gate`: final package decision with blocking evidence gaps.
+
+The prompt cards and exact schemas live in `plugins/submission-package-coach/references/`; the skill loads only the relevant one.
 
 ## Profile Workflow
 
@@ -62,7 +87,13 @@ Validate the plugin:
 python3 /Users/ruilinsu/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/submission-package-coach
 ```
 
-For each release, test the six routes against anonymized examples and record false positives, missed contradictions, and user-accepted suggestions in GitHub Issues. A rule should change only when it has a clear failure case and an explicit expected behavior.
+Run the regression contract before changing routes or prompt cards:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+The initial cases cover number drift, a response claiming an absent edit, SI-label drift, and over-generalizing one mentor edit. Add a sanitized fixture before changing a rule that fixes a new failure. Report regressions or narrow workflow requests through the GitHub issue templates. Never post confidential manuscripts, reviewer reports, data, or mentor annotations.
 
 ## License
 
