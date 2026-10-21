@@ -118,6 +118,7 @@ Do not duplicate specialist workflows. Recommend the smallest appropriate escala
 
 - Use `academic-research-suite` for full integrity checks, citation verification, formal revision/re-review workflow, or a response-to-reviewers traceability matrix.
 - Use `deep-paper-reviewer` for environmental microbiology, microbial ecology, or biogeochemistry manuscripts requiring methods, statistics, figure/SI, or mechanism review.
+- When a user specifically requests STREAMS reporting coverage for an environmental or non-human host microbiome manuscript, point to `deep-paper-reviewer/scripts/streams_map.py` as an optional evidence-location aid. Its eight selected items and keyword candidates are not a full checklist or compliance verdict; use the official STREAMS guidelines for the complete review.
 - Use `nature-skills` only for a Nature-family submission where its journal-specific response or formatting guidance is relevant.
 
 State why escalation is needed and preserve this skill's audit-only contract unless the user changes it.

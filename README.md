@@ -4,6 +4,8 @@ An installable Codex plugin for the final, high-stakes stage of academic submiss
 
 The default is deliberately conservative: it prints a prioritized audit report and minimal manual actions. It does not silently rewrite your files, invent missing evidence, or turn every concern into generic prose.
 
+For environmental and non-human host microbiome manuscripts, the independent [Deep Paper Reviewer](https://github.com/rsuag/deep-paper-reviewer-microbial-ecology) offers an optional [STREAMS evidence map](https://github.com/rsuag/deep-paper-reviewer-microbial-ecology/blob/main/deep-paper-reviewer/scripts/streams_map.py) for selected reporting items. Use its candidate locations alongside this coach's submission-package audit; check applicability and the [official STREAMS guidelines](https://streamsmicrobiome.org/streams-guidelines/) manually.
+
 ## Version 0.2
 
 `v0.2.0` adds the pieces that make a prompt workflow dependable across revision rounds:
